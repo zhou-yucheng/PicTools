@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="PicTools.ColorEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             mc:Ignorable="d"  Name="Root"
+             d:DesignHeight="30" d:DesignWidth="260">
+    <StackPanel>
+        <Button
+            hc:BorderElement.CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),ElementName=Root}"
+            Padding="5"
+               Name="BackgroundColorPickerBtn" HorizontalAlignment="Stretch" 
+               Content="{Binding Value,ElementName=Root,Mode=OneWay}"
+               Foreground="{Binding Value,Converter={StaticResource InverseColorConverter},ElementName=Root}"
+               Background="{Binding Value,Converter={StaticResource ColorConverter},ElementName=Root}"
+               Click="BackgroundColorPickerBtn_Click"></Button>
+        <Popup x:Name="BackgroundColorPickerPopup" Placement="Right" PlacementTarget="{Binding ElementName=BackgroundColorPickerBtn}">
+            <hc:ColorPicker IsHitTestVisible="True" x:Name="BackgroundColorPicker" Canceled="BackgroundColorPicker_Canceled" Confirmed="BackgroundColorPicker_Confirmed" ></hc:ColorPicker>
+        </Popup>
+    </StackPanel>
+</UserControl>
