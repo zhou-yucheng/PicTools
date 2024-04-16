@@ -1,0 +1,19 @@
+﻿<Application x:Class="PicTools.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:PicTools"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+
+            <local:ColorConverter x:Key="ColorConverter"></local:ColorConverter>
+            <local:InverseColorConverter x:Key="InverseColorConverter"></local:InverseColorConverter>
+            <local:PercentValueConverter  x:Key="PercentValueConverter"></local:PercentValueConverter>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

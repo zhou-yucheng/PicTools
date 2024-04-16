@@ -1,0 +1,179 @@
+﻿<hc:Window x:Class="PicTools.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:local="clr-namespace:PicTools"
+        mc:Ignorable="d" Icon="logo.ico" WindowStyle="ToolWindow" AllowsTransparency="False"
+        Title="图片批处理工具" Height="800" MinWidth="960" Width="1280">
+    <Border Padding="10" Background="White">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="10"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Margin="0,0,10,0">图片文件</TextBlock>
+                    <hc:TextBox Text="{Binding ImageFolder}" Width="400"></hc:TextBox>
+                    <Button Margin="10,0,0,0" Background="White" Command="{Binding SelectFolderCommand}" Foreground="{StaticResource PrimaryBrush}" Style="{StaticResource ButtonPrimary}">选择文件夹</Button>
+
+                    <TextBlock Foreground="{StaticResource SecondaryTextBrush}" VerticalAlignment="Center" Margin="10,0,10,0">当前<TextBlock Text="{Binding ImageFiles.Count}"></TextBlock>个图片(jpg/png/jpeg)</TextBlock>
+                </StackPanel>
+                
+                <Grid Grid.Column="1">
+                    <StackPanel Orientation="Horizontal" >
+                        <Button Margin="10,0,0,0" Command="{Binding SaveSingleCommand}"  CommandParameter="{Binding ElementName=ImagesControl}" Style="{StaticResource ButtonPrimary}">批量单文件保存</Button>
+                        <Button Margin="10,0,0,0" Command="{Binding SaveMergeCommand}"  CommandParameter="{Binding ElementName=ImagesControl}" Style="{StaticResource ButtonPrimary}">合成长图</Button>
+                    </StackPanel>
+
+                    <Border Background="White" Visibility="{Binding IsLoading, Converter={StaticResource Boolean2VisibilityConverter}}">
+                        <hc:LoadingLine/>
+                    </Border>
+                </Grid>
+              
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource BorderBrush}">
+                    <ScrollViewer Padding="10,10,20,0" >
+                        <StackPanel Orientation="Vertical" Grid.Row="2">
+                            <TextBlock VerticalAlignment="Center" Margin="0,0,0,5">文字模版</TextBlock>
+                            <hc:TextBox Text="{Binding TextTemplate,Mode=TwoWay,NotifyOnSourceUpdated=True,UpdateSourceTrigger=PropertyChanged}" hc:InfoElement.Placeholder="请输入模版文字，如：[编号]"></hc:TextBox>
+
+                            <TextBlock VerticalAlignment="Center" Margin="0,20,0,5">起始数字</TextBlock>
+                            <hc:NumericUpDown HorizontalContentAlignment="Right" Value="{Binding StartIndex, Mode=TwoWay}" Maximum="99999999" Minimum="0" MinWidth="60" Width="Auto"></hc:NumericUpDown>
+
+                            <hc:Divider>外观</hc:Divider>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Center">
+                                <TextBlock VerticalAlignment="Center" Margin="0,0,20,0" >显示文件名</TextBlock>
+                                <ToggleButton IsChecked="{Binding ShowFileName, Mode=TwoWay}" VerticalAlignment="Center" Style="{StaticResource ToggleButtonSwitch.Small}"></ToggleButton>
+                            </StackPanel>
+
+
+                            <TextBlock VerticalAlignment="Center" Margin="0,20,0,5">字体和大小</TextBlock>
+                            <hc:ComboBox ItemsSource="{Binding DefaultFonts}" SelectedItem="{Binding SelectedFont, Mode=TwoWay}" ></hc:ComboBox>
+
+                            <Slider VerticalAlignment="Center" Margin="0,5,0,5"  Grid.Row="4" Grid.Column="1"  Minimum="1" Maximum="1000" IsSnapToTickEnabled="True"
+                                Value="{Binding FontSize,Mode=TwoWay,NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <TextBlock VerticalAlignment="Center"  Margin="0,5,0,5">文字颜色</TextBlock>
+                            <local:ColorEditor Value="{Binding Foreground,Mode=TwoWay}" hc:BorderElement.CornerRadius="5" VerticalAlignment="Center"></local:ColorEditor>
+
+
+                            <StackPanel Margin="0,20,0,5" Orientation="Vertical" HorizontalAlignment="Center">
+                                <hc:ButtonGroup>
+                                    <RadioButton Command="{Binding SwitchHAlign}" CommandParameter="Left" hc:IconElement.Geometry="{StaticResource AlignLeftGeometry}" IsChecked="True"/>
+                                    <RadioButton Command="{Binding SwitchHAlign}" CommandParameter="Center"  hc:IconElement.Geometry="{StaticResource AlignHCenterGeometry}" />
+                                    <RadioButton Command="{Binding SwitchHAlign}" CommandParameter="Right"  hc:IconElement.Geometry="{StaticResource AlignRightGeometry}" />
+                                </hc:ButtonGroup>
+
+                                <hc:ButtonGroup Margin="0,5,0,0">
+                                    <RadioButton  Command="{Binding SwitchVAlign}" CommandParameter="Top" hc:IconElement.Geometry="{StaticResource AlignTopGeometry}" IsChecked="True"/>
+                                    <RadioButton  Command="{Binding SwitchVAlign}" CommandParameter="Center" hc:IconElement.Geometry="{StaticResource AlignVCenterGeometry}" />
+                                    <RadioButton  Command="{Binding SwitchVAlign}" CommandParameter="Bottom"  hc:IconElement.Geometry="{StaticResource AlignBottomGeometry}" />
+                                </hc:ButtonGroup>
+                            </StackPanel>
+
+                            <local:SizeInput Margin="0,20,0,5"  WidthValue="{Binding Width, Mode=TwoWay}" HeightValue="{Binding Height, Mode=TwoWay}"
+                                         XValue="{Binding X,Mode=TwoWay}"  YValue="{Binding Y,Mode=TwoWay}" RadiusValue="{Binding Radius,Mode=TwoWay}"
+                                         ></local:SizeInput>
+
+                 
+                            <TextBlock VerticalAlignment="Center"  Margin="0,20,0,5">背景色</TextBlock>
+                            <local:ColorEditor Value="{Binding Background,Mode=TwoWay}" hc:BorderElement.CornerRadius="5" VerticalAlignment="Center"></local:ColorEditor>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+
+                <hc:ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" BorderBrush="{StaticResource PrimaryBrush}" BorderThickness="1" Padding="20" Background="#efefef"  Grid.Column="1">
+                    <ItemsControl Name="ImagesControl" HorizontalAlignment="Center" ItemsSource="{Binding ImageFiles}">
+                        <ItemsControl.Template>
+                            <ControlTemplate>
+                                    <StackPanel IsItemsHost="True"></StackPanel>
+                            </ControlTemplate>
+                        </ItemsControl.Template>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border HorizontalAlignment="Center" BorderThickness="0,0,0,1" BorderBrush="#efefef">
+                                    <Grid>
+                                        <Image Width="{Binding DataContext.FirstWidth,ElementName=ImagesControl}" HorizontalAlignment="Stretch" RenderOptions.BitmapScalingMode="NearestNeighbor" SnapsToDevicePixels="True" Margin="0" Source="{Binding FilePath}"/>
+
+                                        <Border Background="#90555555" Visibility="{Binding DataContext.ShowFileName,ElementName=ImagesControl,Converter={StaticResource Boolean2VisibilityConverter}}" CornerRadius="10" Padding="20,5"  VerticalAlignment="Top" HorizontalAlignment="Center" Margin="10" >
+                                            <TextBlock Text="{Binding FileName}" Foreground="White"  FontSize="16"/>
+                                        </Border>
+
+                                        <Border MaxHeight="{Binding ActualHeight,ElementName=ImagesControl}"
+                                                MaxWidth="{Binding ActualWidth,ElementName=ImagesControl}"
+                                                
+                                                VerticalAlignment="{Binding DataContext.VerticalAlignment,ElementName=ImagesControl}" 
+                                                HorizontalAlignment="{Binding DataContext.HorizontalAlignment,ElementName=ImagesControl}"  
+                                                Background="{Binding DataContext.Background,Converter={StaticResource ColorConverter},ElementName=ImagesControl}">
+                                            <Border.Width>
+                                                <MultiBinding Converter="{StaticResource PercentValueConverter}">
+                                                    <Binding Path="DataContext.Width" ElementName="ImagesControl"/>
+                                                    <Binding Path="ActualWidth"  ElementName="ImagesControl"/>
+                                                </MultiBinding>
+                                            </Border.Width>
+
+                                            <Border.CornerRadius>
+                                                <MultiBinding Converter="{StaticResource PercentValueConverter}">
+                                                    <Binding Path="DataContext.Radius" ElementName="ImagesControl"/>
+                                                    <Binding Path="ActualWidth"  ElementName="ImagesControl"/>
+                                                </MultiBinding>
+                                            </Border.CornerRadius>
+
+                                            <Border.Margin>
+                                                <MultiBinding Converter="{StaticResource PercentValueConverter}">
+                                                    <Binding Path="DataContext.X" ElementName="ImagesControl"/>
+                                                    <Binding Path="DataContext.Y" ElementName="ImagesControl"/>
+                                                    <Binding Path="ActualWidth"  ElementName="ImagesControl"/>
+                                                </MultiBinding>
+                                            </Border.Margin>
+
+                                            <Border.Height>
+                                                <MultiBinding Converter="{StaticResource PercentValueConverter}">
+                                                    <Binding Path="DataContext.Height" ElementName="ImagesControl"/>
+                                                    <Binding Path="ActualWidth"  ElementName="ImagesControl"/>
+                                                </MultiBinding>
+                                            </Border.Height>
+
+
+                                            <TextBlock Text="{Binding Title}"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                   FontFamily="{Binding DataContext.SelectedFont.Value,ElementName=ImagesControl}"
+                                                   Foreground="{Binding DataContext.Foreground,Converter={StaticResource ColorConverter}, Mode=OneWay, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True, ElementName=ImagesControl}" 
+                                                   FontSize="{Binding DataContext.FontSize,ElementName=ImagesControl}"/>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </hc:ScrollViewer>
+
+            </Grid>
+
+
+
+
+
+        </Grid>
+    </Border>
+</hc:Window>

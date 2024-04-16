@@ -1,0 +1,38 @@
+﻿<local:EditorControl x:Class="PicTools.SizeInput"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PicTools"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="260">
+    <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch" Width="Auto">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label BorderThickness="0" Background="Transparent" VerticalAlignment="Center">宽</Label>
+        <Slider VerticalAlignment="Center" Margin="10,0" Name="WidthPart"  Grid.Column="1"  Minimum="1" Maximum="99" IsSnapToTickEnabled="True" Value="{Binding WidthValue,Mode=TwoWay,NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Label BorderThickness="0" Background="Transparent" Grid.Row="1" VerticalAlignment="Center"  Grid.Column="0">高</Label>
+        <Slider VerticalAlignment="Center" Margin="10,0" Name="HeightPart"  Grid.Column="1"  Grid.Row="1"  Minimum="1" Maximum="99" IsSnapToTickEnabled="True" Value="{Binding HeightValue,Mode=TwoWay,NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Label BorderThickness="0" Background="Transparent"  Grid.Row="2" VerticalAlignment="Center">X</Label>
+        <Slider VerticalAlignment="Center" Margin="10,0" Name="XPart"  Grid.Column="1"  Grid.Row="2" Minimum="1" Maximum="99" IsSnapToTickEnabled="True" Value="{Binding XValue,Mode=TwoWay,NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <Label BorderThickness="0" Background="Transparent"  Grid.Row="3" VerticalAlignment="Center">Y</Label>
+        <Slider VerticalAlignment="Center" Margin="10,0" Name="YPart"  Grid.Row="3" Grid.Column="1"  Minimum="1" Maximum="99" IsSnapToTickEnabled="True" Value="{Binding YValue,Mode=TwoWay,NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Label BorderThickness="0" Background="Transparent"  Grid.Row="4" VerticalAlignment="Center">圆角</Label>
+        <Slider VerticalAlignment="Center" Margin="10,0" Name="RadiusPart"  Grid.Row="4" Grid.Column="1"  Minimum="0" Maximum="50" IsSnapToTickEnabled="True" Value="{Binding RadiusValue,Mode=TwoWay,NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+    </Grid>
+</local:EditorControl>
